@@ -76,7 +76,7 @@ Practical Assignment 2016-2017\\ Turbulence modeling for adaptive optics{ \huge 
 \begin{minipage}{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Authors:}\\
-\textsc{Xander Gerrmann} (4105907)\\
+\textsc{Xander Gerrmann} (4139186)\\
 \textsc{Dirk Mutters} (4105907)
 \end{flushleft}
 \end{minipage}
@@ -113,7 +113,8 @@ Practical Assignment 2016-2017\\ Turbulence modeling for adaptive optics{ \huge 
 %----------------------------------------------------------------------------------------
 %  Static Wavefront Reconstruction
 %----------------------------------------------------------------------------------------
-\chapter{\bf Static Wavefront Reconstruction}
+\setcounter{section}{3}
+\Chapter{Static Wavefront Reconstruction}
 
 
 
@@ -180,21 +181,11 @@ Using the equations given above, a state-space model can be formulated in which 
             u(k)
         \end{bmatrix}
         + w(k)\\
-    s(k)&=G\phi(k)+e(k)\\
-    &=G\Big(\epsilon(k)+Hu(k-1)\Big)+e(k)\\
-    &=G\epsilon(k)+
-        \begin{bmatrix}
-            GH & 0 
-        \end{bmatrix}
-        \begin{bmatrix}
-            u(k-1)\\
-            u(k)
-        \end{bmatrix}
-        + e(k)
+    s(k)&=G\epsilon(k)+e(k)
 \end{align}
 
 \section*{Q 4.4}
-According to section 5.7 in the textbook, concidering the time invariant system
+According to section 5.7 in the textbook, considering the time invariant system
 \begin{align*}
     x(k+1)&=Ax(k)+Bu(k)+w(k)\\
     y(k)&=Cx(k)+v(k)
@@ -217,20 +208,12 @@ Given our state-space model
             u(k)
         \end{bmatrix}
         + w(k)\\
-    s(k)&=G\epsilon(k)+
-        \begin{bmatrix}
-            GH & 0 
-        \end{bmatrix}
-        \begin{bmatrix}
-            u(k-1)\\
-            u(k)
-        \end{bmatrix}
-        + e(k)
+    s(k)&=G\epsilon(k) + e(k)
 \end{align*}
 
 the associated Kalman filter is
 
-\begin{align*}
+\begin{align}
     \hat{\epsilon}(k+1|k)&=A\hat{\epsilon}(k|k-1)+
     \begin{bmatrix}
         AH & -H 
@@ -242,11 +225,49 @@ the associated Kalman filter is
     +K\eta(k)\\
     s(k)&=G\hat{\epsilon}(k|k-1)+\eta(k),\\
     \text{with }\eta(k)&=G\Big(\epsilon(k)-\hat{\epsilon}(k|k-1)\Big)+e(k)
-\end{align*}
+\end{align}
+
+\section*{Q 4.5}
+The residual wavefront is minimized online by calculating the optimal control action u(k).
+
+rewriting equation 2.21 to
+\begin{align}
+    \eta(k)=s(k)-G\hat{\epsilon}(k|k-1)
+\end{align}
+the $\eta$ term can be substituted into equation 2.20 resulting in
+\begin{align}
+    \hat{\epsilon}(k+1|k)=A\hat{\epsilon}(k|k-1) +
+    \begin{bmatrix}
+        AH & -H 
+    \end{bmatrix}
+    \begin{bmatrix}
+        u(k-1)\\
+        u(k)
+    \end{bmatrix} +
+    K\Big(s(k)-G\hat{\epsilon}(k|k-1)\Big)
+\end{align}
 %----------------------------------------------------------------------------------------
 %  Subspace Identification
 %----------------------------------------------------------------------------------------
 \chapter{\bf Subspace Identification}
+\section*{Q 5.1}
+According the methods described in the book, the only data pre-processing that can be used is detrending, since the sampling time is not known. The mean values of each pixel are calculated and using linear least squares the linear trend in the data is calculated.
+These means and linear trends are both very close to zero, and are insignificantly small. As can be seen in figure \ref{fig:rel_mean} the mean relative to the smallest measurement of that pixel will be lower than 0.012. So substraction of the mean is possible, but will not make a significant difference.
+The linear trend for each pixel is shown in figure \ref{fig:linear_trend}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/relative_mean.eps}
+    \caption{Caption}
+    \label{fig:rel_mean}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/linear_trend.eps}
+  \caption{test}
+  \label{fig:linear_trend}
+\end{figure}
 
 
 
